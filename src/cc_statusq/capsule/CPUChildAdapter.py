@@ -1,6 +1,6 @@
 from cc_statusq_cpu.core import CPUEventBus, DataReceivedEvent, StatusqCPU
 
-from ..core import Monitorable
+from ..core.Monitorable import Monitorable
 from ..core.SystemEvent import HealthReportEvent
 from ..core.SystemEventBus import SystemEventBus
 
