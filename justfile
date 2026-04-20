@@ -1,89 +1,68 @@
-# Justfile for CPU monitoring application
-# Provides standardized commands for development, testing, and deployment
+# Cargar variables desde el archivo .env si existe
+set dotenv-load := true
 
-# --- Application Execution ---
-run:
-	# Execute the main application in production mode with production environment variables
-	uv run --env-file .env.prod main.py
+export APP_DIR := file_name(invocation_directory())
+export PARENT_DIR := "taller"
 
-prod:
-	# Alias for run command - starts production instance
-	uv run --env-file .env.prod main.py
-
-dev:
-	# Execute the main application in development mode with development environment variables
-	uv run --env-file .env.dev main.py
-
-test:
-	# Run the test suite with verbose output using pytest
-	uv run pytest -v tests/ --log-file=tests/test.log --log-file-level=DEBUG
-
-# --- Project Initialization & Setup ---
-init:
-	# Initialize a new Python project using uv
-	uv init
-
-setup:
-	# Synchronize project dependencies according to pyproject.toml/uv.lock
-	uv sync
-
-# --- Package Management ---
-install package:
-	# Add a new Python package to the project dependencies
-	# Usage: make install package=requests
-	uv add {{package}}
-
-uninstall package:
-	# Remove an existing Python package from project dependencies
-	# Usage: make uninstall package=requests
-	uv remove {{package}} 
-
-# # Legacy freeze command - commented out for reference
-# # Generates requirements.txt from current virtual environment
-# freeze:
-#    .venv/bin/python -m pip freeze > requirements.txt
-
-# --- Code Quality & Formatting ---
-check: format-check lint-check
-	# Run all code quality checks (formatting and linting)
-
-format-check:
-	# Check code formatting compliance without making changes
-	# Exits with non-zero status if formatting issues are found
-	uv run ruff format --check .
-
-format:
-	# Automatically format code according to ruff rules
-	uv run ruff format .
-
-lint-check:
-	# Run linting checks to identify code quality issues without fixing
-	uv run ruff check .
-    
-lint:
-	# Run linting checks and automatically fix issues where possible
-	uv run ruff check --fix .
-
-# --- Docker Commands ---
+# Comando por defecto
+default:
+    @just --list
+# para construir el paquete
 build:
-	# Build Docker containers using docker-compose
-	# Use this before starting containers when changes are made to Dockerfile
-	docker-compose up --build
+    uv build
 
-up:
-	# Start Docker containers in detached mode with production environment variables
-	docker-compose --env-file .env.prod up -d
+# para publicar el paquete en PyPI
+publish:
+    uv publish
 
-docker-down:
-	# Stop and remove all running Docker containers defined in docker-compose
-	docker-compose down
+# Run the test suite with verbose output using pytest
+test:
+	uv run --active pytest -v  --showlocals
 
-docker-shell:
-	# Open an interactive bash shell in a new container instance
-	# Useful for debugging and inspecting the container environment
-	docker-compose run --env-file .env.prod --rm --entrypoint /bin/bash statusq-cpu
-
+# Run all code quality checks (formatting and linting)
+check: format-check lint-check
+# Check code formatting compliance without making changes
+format-check:
+	uv run ruff format --check .
+# Run linting checks to identify code quality issues without fixing
+lint-check:
+	uv run ruff check .
+# Fix code quality issues automatically
+fix: format lint
+# Automatically format code according to ruff rules
+format:
+	uv run ruff format .
+# Run linting checks and automatically fix issues where possible  
+lint:
+	uv run ruff check --fix .
+# Generate a changelog from git commit history using git-chglog Output is saved to CHANGELOG.md
 changelog:
-	# Generate a changelog from git commit history using git-chglog
-	# Output is saved to CHANGELOG.md
 	uv run gitchangelog > CHANGELOG.md
+
+# Sincronizar con rclone, hacer commit y push a GitHub
+push:
+    #!/usr/bin/env bash
+
+    # Detener el script si un comando falla
+    set -e  
+
+    rclone sync . gd-ricardo:{{PARENT_DIR}}/{{APP_DIR}} --exclude-from ./rcloneignore.txt --progress -v 
+
+    read -p "Mensaje de commit (Required): " req
+
+    if [ -z "$req" ]; then 
+        echo "Error: El mensaje requerido no puede estar vacío."
+        exit 1
+    fi
+
+    read -p "Descripción adicional (Optional): " opt
+
+    git add .
+
+    if [ -z "$opt" ]; then
+        git commit -m "$req"
+    else
+        git commit -m "$req" -m "$opt"
+    fi
+
+    git push
