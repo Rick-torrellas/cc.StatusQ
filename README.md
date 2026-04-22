@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Rick-torrellas/cc.StatusQ-kit/badges/version.json)
-[![test](https://github.com/Rick-torrellas/cc.StatusQ-kit/actions/workflows/main.yaml/badge.svg)](https://github.com/Rick-torrellas/cc.StatusQ-kit/actions/workflows/main.yaml)
+![test](https://github.com/Rick-torrellas/cc.StatusQ-kit/actions/workflows/main.yaml/badge.svg)(https://github.com/Rick-torrellas/cc.StatusQ-kit/actions/workflows/main.yaml)
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Download](https://img.shields.io/github/v/release/Rick-torrellas/cc.StatusQ-kit?label=Download&color=orange)](https://github.com/Rick-torrellas/cc.StatusQ-kit/releases)
 [![docs](https://img.shields.io/badge/docs-read_now-blue?style=flat-square)](https://rick-torrellas.github.io/cc-book-kit/)
@@ -62,3 +62,14 @@ try:
 except KeyboardInterrupt:
     print("\nStopping orchestrator...")
 ```
+
+---
+
+## 📈 System Flow
+
+* Registration: Adapters are added to the StatusQ child list.
+* Trigger: When pulse_all() or telemetry_stream() is called, the orchestrator invokes the corresponding methods on the adapters.
+* Translation: The CPUAdapter captures hardware data and publishes a HealthReportEvent to the SystemEventBus.
+* Consumption: The ConsoleAdapter receives the event via the bus and displays the formatted metrics.
+
+---
