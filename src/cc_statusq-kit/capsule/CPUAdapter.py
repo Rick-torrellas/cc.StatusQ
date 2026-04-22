@@ -5,7 +5,7 @@ from ..core.SystemEvent import HealthReportEvent
 from ..core.SystemEventBus import SystemEventBus
 
 
-class CPUChildAdapter(Monitorable):
+class CPUAdapter(Monitorable):
     """Adapta la aplicación StatusqCPU al contrato del Orquestador."""
 
     def __init__(self, cpu_app: StatusqCPU, cpu_bus: CPUEventBus, global_bus: SystemEventBus):

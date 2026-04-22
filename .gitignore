@@ -1,7 +1,88 @@
 __pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Modern Python tools (uv, hatch, pdm)
+.pdm-python
+.python-version
 .venv
-logs/*.log
-.pytest_cache
-.ruff_cache
-report/*.json
-tests/*.log
+venv/
+ENV/
+env/
+
+### --- TESTING & COVERAGE --- ###
+.cache
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+### --- ENVIRONMENT & SECRETS --- ###
+# ¡Crucial para evitar el error GH013 que tuviste!
+.env
+.env.*
+.venv
+env/
+venv/
+ENV/
+instance/
+.secret
+.secrets
+
+### --- DATABASE & STORAGE --- ###
+*.sqlite3
+*.db
+*.log
+*.sql
+
+### --- EDITORS & OS --- ###
+# JetBrains (PyCharm)
+.idea/
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Vim & Arch Linux / Unix
+*~
+*.swp
+*.swo
+.DS_Store
+.directory
+
+### --- SPECIFIC TOOLS --- ###
+# Obsidian / Knowledge management
+.obsidian/
+
+# Build tools
+node_modules/
+.vercel/
+.astro/

@@ -3,7 +3,7 @@ from ..core.SystemEvent import HealthReportEvent
 from ..core.SystemEventBus import SystemEventBus
 
 
-class ConsoleLoggerAdapter(Monitorable):
+class ConsoleAdapter(Monitorable):
     """
     Un adaptador que actúa como consumidor de eventos.
     Escucha el bus global y muestra los datos por consola.

@@ -1,6 +1,6 @@
 [project]
-name = "cc.statusq"
-version = "1.3.0"
+name = "cc.statusq-kit"
+version = "0.1.0"
 description = "Real-time CPU monitor. Track performance, temperature, and usage stats instantly."
 readme = "README.md"
 authors = [{name = "Ricardo Torrellas", email = "ricardo.torrejas@gmail.com"}]
