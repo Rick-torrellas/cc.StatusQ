@@ -1,64 +1,63 @@
 from unittest.mock import MagicMock
 
 import pytest
-from adapters.ConsoleLogAdapter import ConsoleLoggerAdapter
-from adapters.CPUChildAdapter import CPUChildAdapter
-from core.StatusQ import StatusQ
-from core.SystemEvent import HealthReportEvent
-
-# Importaciones del proyecto (ajusta el path según tu estructura de carpetas)
-from core.SystemEventBus import SystemEventBus
+from cc_statusq_kit.core import HealthReportEvent, StatusQ, SystemEventBus
 
 
 @pytest.fixture
-def event_bus():
-    """Proporciona una instancia limpia del bus de eventos global."""
+def global_event_bus():
+    """
+    Provides a clean instance of the SystemEventBus for each test.
+    This ensures that subscriptions from one test don't leak into another.
+    """
     return SystemEventBus()
 
-
 @pytest.fixture
-def statusq_app(event_bus):
-    """Proporciona la instancia del orquestador principal."""
-    return StatusQ(event_bus=event_bus)
-
+def statusq_orchestrator(global_event_bus):
+    """
+    Provides an instance of the StatusQ orchestrator initialized with 
+    a fresh global event bus.
+    """
+    return StatusQ(event_bus=global_event_bus)
 
 @pytest.fixture
 def mock_cpu_app():
     """
-    Simula la aplicación hija StatusqCPU (externa).
-    Permite verificar si se llaman a run_single_check o run_continuous_monitoring.
+    Mocks the StatusqCPU external dependency.
+    This allows us to test the CPUAdapter without the actual 
+    cc_statusq_cpu library installed.
     """
-    mock = MagicMock()
-    # Podrías añadir lógica aquí si necesitas que devuelva valores específicos
-    return mock
-
+    mock_app = MagicMock()
+    # Mocking the ID or any specific behavior needed
+    mock_app.run_single_check = MagicMock()
+    mock_app.run_continuous_monitoring = MagicMock()
+    return mock_app
 
 @pytest.fixture
 def mock_cpu_bus():
-    """Simula el bus de eventos interno de la aplicación CPU."""
+    """
+    Mocks the CPUEventBus used by the daughter application.
+    This is useful for triggering DataReceivedEvents manually in tests.
+    """
     return MagicMock()
 
+@pytest.fixture
+def sample_health_data():
+    """
+    Provides a standard dictionary of health data for assertions.
+    """
+    return {
+        "load": 45.5,
+        "temp": 60.0,
+        "cores": 8
+    }
 
 @pytest.fixture
-def cpu_adapter(mock_cpu_app, mock_cpu_bus, event_bus):
-    """Instancia del adaptador de CPU configurado con mocks."""
-    return CPUChildAdapter(
-        cpu_app=mock_cpu_app, 
-        cpu_bus=mock_cpu_bus, 
-        global_bus=event_bus
-    )
-
-
-@pytest.fixture
-def console_adapter(event_bus):
-    """Instancia del adaptador de consola."""
-    return ConsoleLoggerAdapter(global_bus=event_bus)
-
-
-@pytest.fixture
-def sample_health_report():
-    """Genera un evento de salud genérico para pruebas de integración."""
+def sample_health_event(sample_health_data):
+    """
+    Provides a pre-configured HealthReportEvent.
+    """
     return HealthReportEvent(
-        source="test-source",
-        data={"metric_a": 10, "metric_b": 0.5}
+        source="test-monitor",
+        data=sample_health_data
     )
