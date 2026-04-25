@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from cc_statusq_kit.core.StatusQ import StatusQ
+from cc.statusq.kit.core import StatusQ
 
 
 class MockChild:

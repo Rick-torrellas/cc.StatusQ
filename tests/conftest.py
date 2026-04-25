@@ -1,8 +1,10 @@
 from unittest.mock import MagicMock
 
 import pytest
+from cc.statusq.core.base import SystemEventBus
+from cc.statusq.core.events import HealthReportEvent
 
-from cc_statusq_kit.core import HealthReportEvent, StatusQ, SystemEventBus
+from cc.statusq.kit.core import StatusQ
 
 
 @pytest.fixture

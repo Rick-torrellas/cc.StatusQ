@@ -1,6 +1,5 @@
-from ..core.Monitorable import Monitorable
-from ..core.SystemEvent import HealthReportEvent
-from ..core.SystemEventBus import SystemEventBus
+from cc.statusq.core.base import Monitorable, SystemEventBus
+from cc.statusq.core.events import HealthReportEvent
 
 
 class ConsoleAdapter(Monitorable):

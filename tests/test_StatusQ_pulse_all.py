@@ -1,7 +1,8 @@
 from unittest.mock import MagicMock
 
-from cc_statusq_kit.core.StatusQ import StatusQ
-from cc_statusq_kit.core.SystemEvent import DiscoveryStartedEvent
+from cc.statusq.core.events import DiscoveryStartedEvent
+
+from cc.statusq.kit.core import StatusQ
 
 
 def test_pulse_all_notifies_children(global_event_bus):

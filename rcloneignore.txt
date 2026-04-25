@@ -9,6 +9,8 @@
 **/*.pyo
 **/*.pyd
 .env/
+.env
+./.env
 .venv/
 .ruff_cache/
 .pytest_cache/

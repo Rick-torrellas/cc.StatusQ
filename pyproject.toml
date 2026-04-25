@@ -1,12 +1,13 @@
 [project]
-name = "cc.statusq-kit"
-version = "0.3.2"
+name = "cc.statusq.kit"
+version = "0.4.0"
 description = "Real-time CPU monitor. Track performance, temperature, and usage stats instantly."
 readme = "README.md"
 authors = [{name = "Ricardo Torrellas", email = "ricardo.torrejas@gmail.com"}]
 requires-python = ">=3.11"
 dependencies = [
-    "cc-statusq-cpu>=0.8.1",
+    "cc-statusq-core>=0.1.2",
+    "cc-statusq-cpu==0.9.0",
     "core-cpu-monitor==0.2.2",
     "core-log-engine==0.2.2",
     "gitchangelog>=3.0.4",
@@ -21,3 +22,7 @@ dev = [
     "pytest-timeout>=2.4.0",
     "ruff>=0.15.1",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["cc.statusq.*"]

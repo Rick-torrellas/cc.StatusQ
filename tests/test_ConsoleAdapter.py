@@ -1,7 +1,8 @@
 from unittest.mock import MagicMock, patch
 
-from cc_statusq_kit.capsule.ConsoleAdapter import ConsoleAdapter
-from cc_statusq_kit.core.SystemEvent import HealthReportEvent
+from cc.statusq.core.events import HealthReportEvent
+
+from cc.statusq.kit.capsule.ConsoleAdapter import ConsoleAdapter
 
 
 def test_console_adapter_subscription(global_event_bus):

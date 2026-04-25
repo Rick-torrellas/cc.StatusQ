@@ -1,0 +1,31 @@
+runner
+
+class SystemRunner:
+    def __init__(self, monitor: StatusQ):
+        self.monitor = monitor
+        self._stop_event = threading.Event()
+
+    def run(self, interval: float):
+        # 1. Separar tipos de adaptadores
+        blockers = [c for c in self.monitor.children if c.requires_main_thread]
+        workers = [c for c in self.monitor.children if not c.requires_main_thread]
+
+        # 2. Ejecutar workers en hilos daemon
+        for w in workers:
+            threading.Thread(target=w.start_stream, args=(interval,), daemon=True).start()
+
+        # 3. Ejecutar el bloqueante en el hilo principal
+        if blockers:
+            # Tomamos el primero que requiera control
+            blockers[0].start_stream(interval)
+        else:
+            # Si no hay bloqueantes, mantenemos el programa vivo manualmente
+            try:
+                while not self._stop_event.is_set():
+                    time.sleep(1)
+            except KeyboardInterrupt:
+                self.stop()
+
+    def stop(self):
+        self._stop_event.set()
+        # Aquí publicarías el SystemShutdownEvent en el bus

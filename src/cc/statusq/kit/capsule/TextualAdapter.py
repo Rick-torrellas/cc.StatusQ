@@ -1,10 +1,8 @@
+from cc.statusq.core.base import Monitorable, SystemEventBus
+from cc.statusq.core.events import HealthReportEvent
 from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.widgets import DataTable, Footer, Header, Log
-
-from ..core.Monitorable import Monitorable
-from ..core.SystemEvent import HealthReportEvent
-from ..core.SystemEventBus import SystemEventBus
 
 
 class HealthDashboard(App):

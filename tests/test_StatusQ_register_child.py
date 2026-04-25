@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from cc_statusq_kit.core.Monitorable import Monitorable
+from cc.statusq.core.base import Monitorable
 
 
 def test_register_single_child(statusq_orchestrator):

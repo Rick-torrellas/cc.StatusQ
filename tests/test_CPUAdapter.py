@@ -1,7 +1,8 @@
 from unittest.mock import MagicMock
 
-from cc_statusq_kit.capsule.CPUAdapter import CPUAdapter
-from cc_statusq_kit.core.SystemEvent import HealthReportEvent
+from cc.statusq.core.events import HealthReportEvent
+
+from cc.statusq.kit.capsule import CPUAdapter
 
 
 # Using a dummy class to simulate the DataReceivedEvent from the daughter app
